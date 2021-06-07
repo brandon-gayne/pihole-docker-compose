@@ -1,0 +1,29 @@
+version: '3'
+services:
+        pi-hole:
+                image: pihole/pihole
+                restart: always        
+                volumes:
+                        - "pihole-config:/etc/pihole"
+                ports:
+                        - "80:80"
+                        - "443:443"
+                        - "53:53"
+                        - "53:53/udp"
+                        - "67:67"
+                environment:
+                        TZ: "America/NewYork"
+                        WEBPASSWORD: ""
+volumes:
+    pihole-config:
+        driver: local
+        driver_opts:
+            type: "nfs4"
+            o: addr=10.0.50.10,rw
+            device: ":/storage/configs/pihole/"
+    dns-config:
+        driver: local
+        driver_opts:
+            type: "nfs4"
+            o: addr=10.0.50.10,rw
+            device: ":/storage/configs/pihole/dns/"
